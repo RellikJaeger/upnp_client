@@ -76,39 +76,51 @@ class DeviceDescription {
   final XmlElement _xml;
 
   /// The device type
+  @XmlProperty()
   String? deviceType;
 
   /// The user friendly name
+  @XmlProperty()
   String? friendlyName;
 
   /// The manufacturer of this device
+  @XmlProperty()
   String? manufacturer;
 
   /// The URL to the manufacturer site
+  @XmlProperty()
   String? manufacturerUrl;
 
   /// The name of this model
+  @XmlProperty()
   String? modelName;
 
   /// The model number of this device
+  @XmlProperty()
   String? modelNumber;
 
   /// The model description of this device
+  @XmlProperty()
   String? modelDescription;
 
   /// The type of model of this device
+  @XmlProperty()
   String? modelType;
 
   /// The URL to the model site
+  @XmlProperty()
   String? modelUrl;
 
   /// The serial number of this device
+  @XmlProperty()
   String? serialNumber;
 
   /// The universal device name of this device
+  @XmlProperty('UDN')
   String? udn;
 
   /// The universal product code of this device
+  @XmlProperty('UPC')
   String? upc;
 
   List<Icon> icons = [];
@@ -116,18 +128,7 @@ class DeviceDescription {
   String? get uuid => udn?.substring('uuid:'.length);
 
   DeviceDescription.fromXml(this._xml) {
-    deviceType = _xml.getElement('deviceType')?.text;
-    friendlyName = _xml.getElement('friendlyName')?.text;
-    manufacturer = _xml.getElement('manufacturer')?.text;
-    manufacturerUrl = _xml.getElement('manufacturerUrl')?.text;
-    modelName = _xml.getElement('modelName')?.text;
-    modelNumber = _xml.getElement('modelNumber')?.text;
-    modelDescription = _xml.getElement('modelDescription')?.text;
-    modelType = _xml.getElement('modelType')?.text;
-    modelUrl = _xml.getElement('modelUrl')?.text;
-    serialNumber = _xml.getElement('serialNumber')?.text;
-    udn = _xml.getElement('UDN')?.text;
-    upc = _xml.getElement('UPC')?.text;
+    _xml.loadProperties(this);
     
     icons = _xml.loadList('iconList', (icon) => Icon.fromXml(icon));
   }

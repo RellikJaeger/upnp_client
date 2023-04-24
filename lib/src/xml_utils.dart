@@ -1,3 +1,5 @@
+import 'dart:mirrors';
+
 import 'package:xml/xml.dart';
 
 extension XmlElementUtils on XmlElement {
@@ -11,4 +13,29 @@ extension XmlElementUtils on XmlElement {
     }
     return list;
   }
+
+  void loadProperties<T>(T t) {
+    var reflectee = reflect(t);
+    ClassMirror classMirror = reflectClass(XmlProperty);
+
+    for (var value in reflectee.type.declarations.values) {
+      for (var metadata in value.metadata) {
+        if (metadata.type != classMirror) continue;
+
+        XmlProperty r = metadata.reflectee;
+        var name = MirrorSystem.getName(value.simpleName);
+
+        XmlElement? element = getElement(r.propertyName ?? name);
+        var text = element?.text;
+
+        reflectee.setField(value.simpleName, text);
+      }
+    }
+  }
+}
+
+class XmlProperty {
+  final String? propertyName;
+
+  const XmlProperty([this.propertyName]);
 }
