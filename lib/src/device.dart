@@ -145,25 +145,26 @@ class Icon {
   final XmlElement _xml;
 
   /// The mimetype of this icon, always "image/<format>" like "image/png"
+  @XmlProperty()
   String? mimetype;
 
   /// The amount of horizontal pixels
+  @XmlProperty()
   int? width;
 
   /// The amount of vertical pixels
+  @XmlProperty()
   int? height;
 
   /// The color depth of this image
+  @XmlProperty()
   int? depth;
 
   /// The url to this icon
+  @XmlProperty()
   String? url;
 
   Icon.fromXml(this._xml) {
-    mimetype = _xml.getElement('mimetype')?.text;
-    width = int.parse(_xml.getElement('width')?.text ?? '');
-    height = int.parse(_xml.getElement('height')?.text ?? '');
-    depth = int.parse(_xml.getElement('depth')?.text ?? '');
-    url = _xml.getElement('url')?.text;
+    _xml.loadProperties(this);
   }
 }
